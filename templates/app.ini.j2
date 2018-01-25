@@ -1,4 +1,56 @@
 APP_NAME = "{{ gitea_app_name }}"
-{{ if gitea_run_mode is defined }}
+{% if gitea_run_mode is defined %}
 RUN_MODE = "{{ gitea_run_mode }}"
-{{ endif
+{% endif%}
+RUN_USER = "{{ gitea_user }}"
+
+[repository]
+ROOT = {{ gitea_repo_dir}}
+
+[repository.upload]
+TEMP_PATH = {{ gitea_temp_dir }}
+
+[server]
+APP_DATA_PATH = {{ gitea_server_app_data_path }}
+SSH_DOMAIN = {{ gitea_server_ssh_domain }}
+HTTP_PORT = {{ gitea_server_http_port }}
+ROOT_URL = {{ gitea_server_root_url }}
+DISABLE_SSH = {{ gitea_server_disable_ssh }}
+SSH_PORT = {{ gitea_server_ssh_port }}
+DOMAIN = {{ gitea_server_domain }}
+START_SSH_SERVER = {{ gitea_server_start_ssh_server }}
+LFS_START_SERTVER = {{ gitea_server_lfs_start_server }}
+LFS_CONTENT_PATH = {{ gitea_server_lfs_content_path }}
+LFS_JWT_SECRET =  {{ gitea_server_lfs_jwt_secret }}
+OFFLINE_MODE = {{ gitea_server_offline_mode }}
+
+[database]
+{% if gitea_database_type == 'mysql' or gitea_database_type == 'postgres' %}
+TYPE   = {{ gitea_database_type }}
+HOST   = {{ gitea_database_host }}
+PASSWD = {{ gitea_database_pass }}
+USER   = {{ gitea_database_user }}
+NAME   = {{ gitea_database_name }}
+{% if gitea_database_type == 'postgres' -%}
+SSL_MODE = {{ gitea_database_ssl_mode }}
+{% endif -%}
+{% else %}
+TYPE = sqlite3
+PATH = {{ gitea_database_path }}
+{% endif %}
+
+[session]
+{% if gitea_session_provider == 'redis' %}
+PROVIDER_CONFIG = network=tcp,addr={{ gitea_session_redis_host }}:{{ gitea_session_redis_port }},db=0,pool_size=100,idle_timeout=180
+PROVIDER        = {{ gitea_session_provider }}
+{% else %}
+PROVIDER        = {{ gitea_session_provider }}
+{% endif %}
+
+[cache]
+{% if gitea_cache_adapter == 'redis' %}
+ADAPTER = redis
+HOST = network=tcp,addr={{ gitea_cache_redis_host}}:{{ gitea_cache_redis_port }},db=1,pool_size=100,idle_timeout=180
+{% else %}
+ADAPTER = memory
+{% endif %}

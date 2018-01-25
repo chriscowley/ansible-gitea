@@ -69,7 +69,7 @@
 - name: create Gitea config file
   template:
     src: app.ini.j2
-    dest: "{{ gitea_bin | dirname }}/custom/conf/app.ini-test"
+    dest: "{{ gitea_bin | dirname }}/custom/conf/app.ini"
     owner: "{{ gitea_user }}"
     group: "{{ gitea_group }}"
     mode: 0644
