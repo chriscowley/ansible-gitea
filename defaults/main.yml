@@ -15,3 +15,6 @@ gitea_working_dir: /home/gitea
 # Runtime user and group for the gitea service
 gitea_user: git
 gitea_group: git
+
+# Config defaults
+gitea_app_name: "Gitea: Git with a cup of tea"

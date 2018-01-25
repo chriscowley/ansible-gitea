@@ -66,6 +66,15 @@
   when: ansible_service_mgr != "systemd"
   notify: restart gitea
 
+- name: create Gitea config file
+  template:
+    src: app.ini.j2
+    dest: "{{ gitea_bin | dirname }}/custom/conf/app.ini-test"
+    owner: "{{ gitea_user }}"
+    group: "{{ gitea_group }}"
+    mode: 0644
+  notify: restart gitea
+
 - name: enable and start the gitea web service
   service:
     name: gitea
