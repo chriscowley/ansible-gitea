@@ -59,3 +59,6 @@ gitea_security_internal_token: "{{ (ansible_fqdn | hash('sha1'))[:36] }}.{{ (ans
 gitea_security_secret_key: "{{ (ansible_host | checksum)[:10] }}"
 
 gitea_service_disable_registration: false
+
+gitea_openid_enable_openid_signin: true
+gitea_openid_enable_openid_signup: true
