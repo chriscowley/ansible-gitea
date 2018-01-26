@@ -35,7 +35,7 @@ gitea_server_lfs_jwt_secret: "{{ ( ansible_hostname | hash) }}"
 gitea_server_offline_mode: false
 
 gitea_database_type: sqlite3
-gitea_database_path: "{{ gitea_server_app_data_path }}/gitea.db }}"
+gitea_database_path: "{{ gitea_server_app_data_path }}/gitea.db"
 gitea_database_host: localhost
 gitea_database_name: gitea
 gitea_database_user: gitea
@@ -49,3 +49,13 @@ gitea_session_redis_port: 6379
 gitea_cache_adapter: memory
 gitea_cache_redis_host: localhost
 gitea_cache_redis_port: 6379
+
+gitea_log_root_path: /var/log/gitea
+gitea_log_mode: file
+gitea_log_level: Error
+
+gitea_security_install_lock: true
+gitea_security_internal_token: "{{ (ansible_fqdn | hash('sha1'))[:36] }}.{{ (ansible_system | hash('sha1'))[:36] }}.{{ (ansible_os_family | hash('sha1'))[:36] }}"
+gitea_security_secret_key: "{{ (ansible_host | checksum)[:10] }}"
+
+gitea_service_disable_registration: false

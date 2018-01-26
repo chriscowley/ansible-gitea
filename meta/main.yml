@@ -1,9 +1,9 @@
 galaxy_info:
-  author: Andrea Tosatto
+  author: Chris Cowley
   description: Install and configure the Gitea self-hosted git server on RHEL/CentOS and Debian/Ubuntu
   min_ansible_version: 2.1
   license: MIT
-  issue_tracker_url: https://github.com/atosatto/ansible-gitea/issues
+  issue_tracker_url: https://github.com/chriscowley/ansible-gitea/issues
 
   platforms:
     - name: EL

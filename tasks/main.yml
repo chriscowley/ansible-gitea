@@ -70,10 +70,16 @@
   template:
     src: app.ini.j2
     dest: "{{ gitea_bin | dirname }}/custom/conf/app.ini"
+  notify: restart gitea
+
+- name: Create log dir
+  file:
+    path: "{{ gitea_log_root_path }}"
+    state: directory
     owner: "{{ gitea_user }}"
     group: "{{ gitea_group }}"
-    mode: 0644
-  notify: restart gitea
+    mode: 0755
+    recurse: yes
 
 - name: enable and start the gitea web service
   service:

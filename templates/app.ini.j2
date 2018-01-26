@@ -26,8 +26,14 @@ OFFLINE_MODE = {{ gitea_server_offline_mode }}
 
 [database]
 {% if gitea_database_type == 'mysql' or gitea_database_type == 'postgres' %}
-TYPE   = {{ gitea_database_type }}
-HOST   = {{ gitea_database_host }}
+DB_TYPE   = {{ gitea_database_type }}
+{% if gitea_database_port is defined %}
+HOST   = {{ gitea_database_host }}:{{ gitea_database_port }}
+{% elif gitea_database_type == 'postgres' %}
+HOST =  {{ gitea_database_host }}:5432
+{% else %}
+HOST =  {{ gitea_database_host }}:3306
+{% endif %}
 PASSWD = {{ gitea_database_pass }}
 USER   = {{ gitea_database_user }}
 NAME   = {{ gitea_database_name }}
@@ -35,7 +41,7 @@ NAME   = {{ gitea_database_name }}
 SSL_MODE = {{ gitea_database_ssl_mode }}
 {% endif -%}
 {% else %}
-TYPE = sqlite3
+DB_TYPE = sqlite3
 PATH = {{ gitea_database_path }}
 {% endif %}
 
@@ -54,3 +60,36 @@ HOST = network=tcp,addr={{ gitea_cache_redis_host}}:{{ gitea_cache_redis_port }}
 {% else %}
 ADAPTER = memory
 {% endif %}
+
+[log]
+ROOT_PATH = {{ gitea_log_root_path }}
+MODE = {{ gitea_log_mode }}
+LEVEL = {{ gitea_log_level }}
+
+[security]
+INSTALL_LOCK = {{ gitea_security_install_lock }}
+SECURITY_KEY = {{ gitea_security_secret_key }}
+INTERNAL_TOKEN = {{ gitea_security_internal_token }}
+
+[mailer]
+ENABLED = false
+
+[service]
+REGISTER_EMAIL_CONFIRM            = false
+ENABLE_NOTIFY_MAIL                = false
+DISABLE_REGISTRATION              = {{ gitea_service_disable_registration }}
+ENABLE_CAPTCHA                    = false
+REQUIRE_SIGNIN_VIEW               = false
+DEFAULT_KEEP_EMAIL_PRIVATE        = false
+DEFAULT_ALLOW_CREATE_ORGANIZATION = true
+DEFAULT_ENABLE_TIMETRACKING       = true
+NO_REPLY_ADDRESS                  = noreply@{{ ansible_domain }}
+
+
+[picture]
+DISABLE_GRAVATAR        = false
+ENABLE_FEDERATED_AVATAR = false
+
+[openid]
+ENABLE_OPENID_SIGNIN = true
+ENABLE_OPENID_SIGNUP = true
